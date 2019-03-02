@@ -1,0 +1,8 @@
+[package]
+name = "const-random"
+version = "0.1.0"
+authors = ["tom <Tom.Kaitchuck@dell.com>"]
+edition = "2018"
+
+[dependencies]
+const-random-macro = { path = "macro" }

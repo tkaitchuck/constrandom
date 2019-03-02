@@ -1,0 +1,11 @@
+[package]
+name = "const-random-macro"
+version = "0.0.1"
+authors = ["tom <Tom.Kaitchuck@dell.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+rand = "0.6.5"
