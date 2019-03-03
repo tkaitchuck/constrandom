@@ -1,4 +1,4 @@
-//use const_random_macro;
+use proc_macro_hack::proc_macro_hack;
 
 /// # Random constants
 /// Allows you to insert random constants into your code that will be auto-generated at compile time.
@@ -11,11 +11,5 @@
 ///
 /// The following types are supported u8, u16, u32, u64, and u128
 ///
-#[macro_export]
-macro_rules! const_random {
-    (u8) => {{ const_random_macro::const_random_u8!() }};
-    (u16) => {{ const_random_macro::const_random_u16!() }};
-    (u32) => {{ const_random_macro::const_random_u32!() }};
-    (u64) => {{ const_random_macro::const_random_u64!() }};
-    (u128) => {{ const_random_macro::const_random_u128!() }};
-}
+#[proc_macro_hack]
+pub use const_random_macro::const_random;
