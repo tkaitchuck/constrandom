@@ -6,8 +6,9 @@ repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
 authors = ["Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"]
 keywords = ["rust", "constants", "macro"]
+description = "Provides compile time random number generation."
 readme = "README.md"
 edition = "2018"
 
 [dependencies]
-const-random-macro = { path = "macro" }
+const-random-macro = { path = "macro", version = "0.1.0"}

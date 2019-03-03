@@ -6,7 +6,7 @@ repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
 authors = ["Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"]
 keywords = ["rust", "constants", "macro"]
-readme = "README.md"
+description = "Provides the procedural macro used by const-random"
 edition = "2018"
 
 [lib]
