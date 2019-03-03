@@ -8,10 +8,10 @@ This obviously makes the resulting binary or lib non-deterministic.
 # Example 
 
 ```
-#![feature(proc_macro_hygiene)]
 use const_random::const_random  ;
 const MY_RANDOM_NUMBER: u32 = const_random!(u32);
 ```
-Note that the `#![feature(proc_macro_hygiene)]` must be enabled on your crate for the macro to work.
+This works exactly as through you have called: `rand::random::<u32>()` except that code is being run at compile time.
+So for details of the random number generation, see the `rand` crates documentation.
 
-The following types are supported u8, u16, u32, u64, and u128
+The following types are supported: u8, i8, u16, i16, u32, i32, u64, i64, u128. i128.
