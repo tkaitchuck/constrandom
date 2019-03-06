@@ -15,3 +15,7 @@ This works exactly as through you have called: `rand::random::<u32>()` except th
 So for details of the random number generation, see the `rand` crates documentation.
 
 The following types are supported: u8, i8, u16, i16, u32, i32, u64, i64, u128. i128.
+
+----
+
+[![xkcd: chosen by fair dice roll](https://imgs.xkcd.com/comics/random_number.png)](https://xkcd.com/221/)
