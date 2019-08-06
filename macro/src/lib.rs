@@ -1,12 +1,5 @@
-#![no_std]
 extern crate proc_macro;
-#[macro_use]
-extern crate alloc;
 
-use core::iter::FromIterator;
-
-use alloc::string::String;
-use alloc::string::ToString;
 use proc_macro::TokenStream;
 use proc_macro_hack::proc_macro_hack;
 use rand::rngs::OsRng;
