@@ -11,7 +11,7 @@ This obviously makes the resulting binary or lib non-deterministic.
 use const_random::const_random  ;
 const MY_RANDOM_NUMBER: u32 = const_random!(u32);
 ```
-This works exactly as through you have called: `rand::random::<u32>()` except that code is being run at compile time.
+This works exactly as through you have called: `OsRng.gen::<u32>()` at compile time.
 So for details of the random number generation, see the `rand` crates documentation.
 
 The following types are supported: u8, i8, u16, i16, u32, i32, u64, i64, u128. i128.
