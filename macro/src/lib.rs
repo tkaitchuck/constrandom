@@ -1,11 +1,5 @@
 extern crate proc_macro;
-#[macro_use]
-extern crate alloc;
 
-use core::iter::FromIterator;
-
-use alloc::string::String;
-use alloc::string::ToString;
 use proc_macro::TokenStream;
 use proc_macro_hack::proc_macro_hack;
 use rand::rngs::OsRng;
@@ -24,7 +18,7 @@ pub fn const_random(input: TokenStream) -> TokenStream {
         "i32" => format!("0x{:x}", OsRng.gen::<i32>()).parse().unwrap(),
         "i64" => format!("0x{:x}", OsRng.gen::<i64>()).parse().unwrap(),
         "i128" => format!("0x{:x}", OsRng.gen::<i128>()).parse().unwrap(),
-        _ => "".parse().unwrap(),
+        _ => panic!("Invalid integer type"),
     }
 
 }

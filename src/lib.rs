@@ -1,8 +1,6 @@
 #![no_std]
 use proc_macro_hack::proc_macro_hack;
 
-use core::iter::FromIterator;
-
 /// # Random constants
 /// Allows you to insert random constants into your code that will be auto-generated at compile time.
 /// A new value will be generated every time the relevent file is re-built.
