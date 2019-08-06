@@ -2,7 +2,7 @@ cargo-features = ["public-dependency"]
 
 [package]
 name = "const-random"
-version = "0.1.4"
+version = "0.1.5"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
@@ -13,5 +13,5 @@ readme = "README.md"
 edition = "2018"
 
 [dependencies]
-const-random-macro = { path = "macro", version = "0.1.4", public = true}
+const-random-macro = { path = "macro", version = "0.1.5", public = true}
 proc-macro-hack = { version = "0.5" }
