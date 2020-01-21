@@ -14,3 +14,6 @@ use proc_macro_hack::proc_macro_hack;
 ///
 #[proc_macro_hack]
 pub use const_random_macro::const_random;
+
+#[proc_macro_hack]
+pub use const_random_macro::const_val;
