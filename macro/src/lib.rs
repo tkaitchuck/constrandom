@@ -18,16 +18,16 @@ fn gen_random<T>() -> T {
 #[proc_macro_hack]
 pub fn const_random(input: TokenStream) -> TokenStream {
     match &input.to_string()[..] {
-        "u8" => format!("0x{:x}", gen_random::<u8>()).parse().unwrap(),
-        "u16" => format!("0x{:x}", gen_random::<u16>()).parse().unwrap(),
-        "u32" => format!("0x{:x}", gen_random::<u32>()).parse().unwrap(),
-        "u64" => format!("0x{:x}", gen_random::<u64>()).parse().unwrap(),
-        "u128" => format!("0x{:x}", gen_random::<u128>()).parse().unwrap(),
-        "i8" => format!("0x{:x}", gen_random::<i8>()).parse().unwrap(),
-        "i16" => format!("0x{:x}", gen_random::<i16>()).parse().unwrap(),
-        "i32" => format!("0x{:x}", gen_random::<i32>()).parse().unwrap(),
-        "i64" => format!("0x{:x}", gen_random::<i64>()).parse().unwrap(),
-        "i128" => format!("0x{:x}", gen_random::<i128>()).parse().unwrap(),
+        "u8" => format!("0x{:x}u8", gen_random::<u8>()).parse().unwrap(),
+        "u16" => format!("0x{:x}u16", gen_random::<u16>()).parse().unwrap(),
+        "u32" => format!("0x{:x}u32", gen_random::<u32>()).parse().unwrap(),
+        "u64" => format!("0x{:x}u64", gen_random::<u64>()).parse().unwrap(),
+        "u128" => format!("0x{:x}u128", gen_random::<u128>()).parse().unwrap(),
+        "i8" => format!("0x{:x}i8", gen_random::<i8>()).parse().unwrap(),
+        "i16" => format!("0x{:x}i16", gen_random::<i16>()).parse().unwrap(),
+        "i32" => format!("0x{:x}i32", gen_random::<i32>()).parse().unwrap(),
+        "i64" => format!("0x{:x}i64", gen_random::<i64>()).parse().unwrap(),
+        "i128" => format!("0x{:x}i128", gen_random::<i128>()).parse().unwrap(),
         _ => panic!("Invalid integer type"),
     }
 }
