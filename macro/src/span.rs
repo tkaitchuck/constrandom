@@ -1,6 +1,11 @@
 use proc_macro::Span;
 use std::collections::hash_map::DefaultHasher;
+use std::env;
 use std::hash::{Hash, Hasher};
+
+fn seed() -> impl Hash {
+    env::var_os("CONST_RANDOM_SEED")
+}
 
 pub(crate) fn gen_random<T: Random>() -> T {
     Random::random()
@@ -32,6 +37,7 @@ impl Random for u64 {
     fn random() -> Self {
         let span = Span::call_site();
         let mut hasher = DefaultHasher::new();
+        seed().hash(&mut hasher);
         span.source_file().path().hash(&mut hasher);
         span.start().line.hash(&mut hasher);
         span.start().column.hash(&mut hasher);
@@ -49,6 +55,7 @@ impl Random for u128 {
         span.start().column.hash(&mut hasher);
         span.start().line.hash(&mut hasher);
         span.source_file().path().hash(&mut hasher);
+        seed().hash(&mut hasher);
         let hi = hasher.finish();
 
         ((hi as u128) << 8) + lo as u128
