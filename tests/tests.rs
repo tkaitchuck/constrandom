@@ -18,6 +18,14 @@ fn i64() {
     assert_ne!(VALUE1, VALUE2, "A random generated constant was the same as another. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
 }
 
+#[test]
+fn usize() {
+    const VALUE1: usize = const_random!(usize);
+    const VALUE2: usize = const_random!(usize);
+    assert_ne!(0, VALUE1, "A random generated constant was zero. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
+    assert_ne!(0, VALUE2, "A random generated constant was zero. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
+    assert_ne!(VALUE1, VALUE2, "A random generated constant was the same as another. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
+}
 
 #[test]
 fn u128() {
