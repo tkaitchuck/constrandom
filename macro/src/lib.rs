@@ -1,6 +1,3 @@
-#![feature(proc_macro_quote)]
-extern crate proc_macro;
-
 use getrandom;
 use proc_macro::*;
 use proc_macro_hack::proc_macro_hack;
@@ -13,6 +10,11 @@ fn gen_random<T>() -> T {
     let mut out = [0u8; 16];
     getrandom::getrandom(&mut out).unwrap();
     unsafe { std::mem::transmute_copy(&out) }
+}
+
+/// Create a TokenStream of an identifier out of a string
+fn ident(ident: &str) -> TokenStream {
+    TokenTree::from(Ident::new(ident, Span::call_site())).into()
 }
 
 #[proc_macro_hack]
@@ -30,11 +32,19 @@ pub fn const_random(input: TokenStream) -> TokenStream {
         "i128" => TokenTree::from(Literal::i128_suffixed(gen_random())).into(),
         "usize" => {
             let value: TokenStream = TokenTree::from(Literal::u128_suffixed(gen_random())).into();
-            quote!(($value as usize))
+            let type_cast: TokenStream = [value, ident("as"), ident("usize")]
+                .iter()
+                .cloned()
+                .collect();
+            TokenTree::from(Group::new(Delimiter::Parenthesis, type_cast)).into()
         }
         "isize" => {
             let value: TokenStream = TokenTree::from(Literal::i128_suffixed(gen_random())).into();
-            quote!(($value as isize))
+            let type_cast: TokenStream = [value, ident("as"), ident("isize")]
+                .iter()
+                .cloned()
+                .collect();
+            TokenTree::from(Group::new(Delimiter::Parenthesis, type_cast)).into()
         }
         _ => panic!("Invalid integer type"),
     }
