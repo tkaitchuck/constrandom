@@ -4,18 +4,18 @@ use const_random::const_random;
 fn u32() {
     const VALUE1: u32 = const_random!(u32);
     const VALUE2: u32 = const_random!(u32);
-    assert_ne!(0, VALUE1);
-    assert_ne!(0, VALUE2);
-    assert_ne!(VALUE1, VALUE2);
+    assert_ne!(0, VALUE1, "A random generated constant was zero. (This can randomly occur one time in 2^32) If this reproduces, it is a bug.");
+    assert_ne!(0, VALUE2, "A random generated constant was zero. (This can randomly occur one time in 2^32) If this reproduces, it is a bug.");
+    assert_ne!(VALUE1, VALUE2, "A random generated constant was the same as another. (This can randomly occur one time in 2^32) If this reproduces, it is a bug.");
 }
 
 #[test]
 fn i64() {
     const VALUE1: i64 = const_random!(i64);
     const VALUE2: i64 = const_random!(i64);
-    assert_ne!(0, VALUE1);
-    assert_ne!(0, VALUE2);
-    assert_ne!(VALUE1, VALUE2);
+    assert_ne!(0, VALUE1, "A random generated constant was zero. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
+    assert_ne!(0, VALUE2, "A random generated constant was zero. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
+    assert_ne!(VALUE1, VALUE2, "A random generated constant was the same as another. (This can randomly occur one time in 2^64) If this reproduces, it is a bug.");
 }
 
 
