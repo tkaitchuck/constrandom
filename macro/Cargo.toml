@@ -1,6 +1,6 @@
 [package]
 name = "const-random-macro"
-version = "0.1.8"
+version = "0.1.11"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
@@ -13,5 +13,5 @@ edition = "2018"
 proc-macro = true
 
 [dependencies]
-proc-macro-hack = { version = "0.5" }
-getrandom = "0.1"
+proc-macro-hack = { version = "0.5.13" }
+getrandom = "0.2"
