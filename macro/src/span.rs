@@ -47,7 +47,7 @@ impl Random for u64 {
 
 impl Random for u128 {
     fn random() -> Self {
-        let lo = u64::random();
+        let [a, b, c, d, e, f, g, h] = u64::random().to_ne_bytes();
 
         // Hash the same stuff in a different order.
         let span = Span::call_site();
@@ -56,9 +56,9 @@ impl Random for u128 {
         span.start().line.hash(&mut hasher);
         span.source_file().path().hash(&mut hasher);
         seed().hash(&mut hasher);
-        let hi = hasher.finish();
+        let [i, j, k, l, m, n, o, p] = hasher.finish().to_ne_bytes();
 
-        ((hi as u128) << 8) + lo as u128
+        u128::from_ne_bytes([a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p])
     }
 }
 
