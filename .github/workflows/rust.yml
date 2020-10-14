@@ -20,3 +20,7 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
+    - name: Run tests (deterministic based on span)
+      run: RUSTFLAGS='--cfg deterministic_based_on_span' cargo test --verbose
+    - name: Run tests (deterministic based on span, with sha2)
+      run: RUSTFLAGS='--cfg deterministic_based_on_span' cargo test --features sha2 --verbose
