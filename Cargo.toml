@@ -13,3 +13,6 @@ edition = "2018"
 [dependencies]
 const-random-macro = { path = "macro", version = "0.1.11"}
 proc-macro-hack = { version = "0.5" }
+
+[features]
+sha2 = ["const-random-macro/sha2"]
