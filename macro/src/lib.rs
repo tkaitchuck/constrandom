@@ -1,28 +1,12 @@
-#![cfg_attr(deterministic_based_on_span, feature(proc_macro_span))]
-
 use proc_macro::*;
 use proc_macro_hack::proc_macro_hack;
-
-// Ideally we would use the proper interface for this through the rand crate,
-// but due to https://github.com/rust-lang/cargo/issues/5730 this leads to
-// issues for no_std crates that try to use rand themselves. So instead we skip
-// rand and generate random bytes straight from the OS.
-#[cfg(not(deterministic_based_on_span))]
-fn gen_random<T>() -> T {
-    let mut out = [0u8; 16];
-    getrandom::getrandom(&mut out).unwrap();
-    unsafe { std::mem::transmute_copy(&out) }
-}
+mod span;
+use crate::span::gen_random;
 
 /// Create a TokenStream of an identifier out of a string
 fn ident(ident: &str) -> TokenStream {
     TokenTree::from(Ident::new(ident, Span::call_site())).into()
 }
-
-#[cfg(deterministic_based_on_span)]
-mod span;
-#[cfg(deterministic_based_on_span)]
-use crate::span::gen_random;
 
 #[proc_macro_hack]
 pub fn const_random(input: TokenStream) -> TokenStream {

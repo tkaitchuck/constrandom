@@ -1,48 +1,19 @@
-use self::hash::Hasher;
 use proc_macro::Span;
 use std::env;
-use std::hash::{Hash, Hasher as _};
 
-#[cfg(feature = "sha2")]
-mod hash {
-    use sha2::Digest;
+use lazy_static::lazy_static;
+use tiny_keccak::{Hasher, Sha3};
 
-    pub struct Hasher(sha2::Sha256);
-
-    impl Hasher {
-        pub fn new() -> Self {
-            Hasher(Digest::new())
+lazy_static! {
+    static ref SEED: Vec<u8> = {
+        if let Some(value) = env::var_os("CONST_RANDOM_SEED") {
+            value.to_str().expect("CONST_RANDOM_SEED environmental variable contains non-unicode characters").as_bytes().to_vec()
+        } else {
+            let mut value = [0u8; 32];
+            getrandom::getrandom(&mut value).unwrap();
+            value.to_vec()
         }
-
-        fn finalize(&self) -> [u8; 32] {
-            self.0.clone().finalize().into()
-        }
-
-        pub fn finish_wide(self) -> u128 {
-            let [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, ..] = self.finalize();
-            u128::from_ne_bytes([a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p])
-        }
-    }
-
-    impl std::hash::Hasher for Hasher {
-        fn finish(&self) -> u64 {
-            let [a, b, c, d, e, f, g, h, ..] = self.finalize();
-            u64::from_ne_bytes([a, b, c, d, e, f, g, h])
-        }
-
-        fn write(&mut self, bytes: &[u8]) {
-            self.0.update(bytes);
-        }
-    }
-}
-
-#[cfg(not(feature = "sha2"))]
-mod hash {
-    pub use std::collections::hash_map::DefaultHasher as Hasher;
-}
-
-fn seed() -> impl Hash {
-    env::var_os("CONST_RANDOM_SEED")
+    };
 }
 
 pub(crate) fn gen_random<T: Random>() -> T {
@@ -53,42 +24,27 @@ pub(crate) trait Random {
     fn random() -> Self;
 }
 
-fn hash_stuff() -> Hasher {
+fn hash_stuff() -> impl Hasher {
     let span = Span::call_site();
-    let mut hasher = Hasher::new();
-    seed().hash(&mut hasher);
-    span.source_file().path().hash(&mut hasher);
-    span.start().line.hash(&mut hasher);
-    span.start().column.hash(&mut hasher);
+    let mut hasher = Sha3::v256();
+    hasher.update(&*SEED);
+    hasher.update(&format!("{:?}", span).as_bytes());
     hasher
 }
 
 impl Random for u64 {
     fn random() -> Self {
-        hash_stuff().finish()
+        let mut output = [0; 8];
+        hash_stuff().finalize(&mut output);
+        Self::from_ne_bytes(output)
     }
 }
 
 impl Random for u128 {
-    #[cfg(feature = "sha2")]
     fn random() -> Self {
-        hash_stuff().finish_wide()
-    }
-
-    #[cfg(not(feature = "sha2"))]
-    fn random() -> Self {
-        let [a, b, c, d, e, f, g, h] = u64::random().to_ne_bytes();
-
-        // Hash the same stuff in a different order.
-        let span = Span::call_site();
-        let mut hasher = Hasher::new();
-        span.start().column.hash(&mut hasher);
-        span.start().line.hash(&mut hasher);
-        span.source_file().path().hash(&mut hasher);
-        seed().hash(&mut hasher);
-        let [i, j, k, l, m, n, o, p] = hasher.finish().to_ne_bytes();
-
-        u128::from_ne_bytes([a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p])
+        let mut output = [0; 16];
+        hash_stuff().finalize(&mut output);
+        Self::from_ne_bytes(output)
     }
 }
 
