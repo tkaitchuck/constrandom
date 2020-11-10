@@ -24,6 +24,6 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - name: Run tests (deterministic based on span)
-      run: RUSTFLAGS='--cfg deterministic_based_on_span' cargo +nightly test --verbose
-    - name: Run tests (deterministic based on span, with sha2)
-      run: RUSTFLAGS='--cfg deterministic_based_on_span' cargo +nightly test --features sha2 --verbose
+      env:
+        CONST_RANDOM_SEED: testSeed
+      run: cargo test --verbose

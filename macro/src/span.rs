@@ -1,13 +1,13 @@
 use proc_macro::Span;
-use std::env;
+use std::option_env;
 
 use lazy_static::lazy_static;
 use tiny_keccak::{Hasher, Sha3};
 
 lazy_static! {
     static ref SEED: Vec<u8> = {
-        if let Some(value) = env::var_os("CONST_RANDOM_SEED") {
-            value.to_str().expect("CONST_RANDOM_SEED environmental variable contains non-unicode characters").as_bytes().to_vec()
+        if let Some(value) = option_env!("CONST_RANDOM_SEED") {
+            value.as_bytes().to_vec()
         } else {
             let mut value = [0u8; 32];
             getrandom::getrandom(&mut value).unwrap();
