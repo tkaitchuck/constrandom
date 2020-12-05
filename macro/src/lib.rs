@@ -1,3 +1,6 @@
+#[allow(unused_extern_crates)]
+extern crate proc_macro;
+
 use proc_macro::*;
 use proc_macro_hack::proc_macro_hack;
 mod span;
