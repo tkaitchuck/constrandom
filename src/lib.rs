@@ -12,5 +12,5 @@ use proc_macro_hack::proc_macro_hack;
 ///
 /// The following types are supported u8, i8, u16, i16, u32, i32, u64, i64, u128, i128, usize, and isize. 
 ///
-#[proc_macro_hack(fake_call_site)]
+#[proc_macro_hack(fake_call_site, only_hack_old_rustc)]
 pub use const_random_macro::const_random;
