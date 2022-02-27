@@ -46,3 +46,12 @@ fn suffixed() {
     }
     f(const_random!(u8));
 }
+
+#[test]
+fn array() {
+    const VALUE1: &[u8] = &const_random!([u8; 30]);
+    const VALUE2: [u8; 30] = const_random!([u8; 30]);
+    assert_ne!([0u8; 30], VALUE1);
+    assert_ne!([0u8; 30], VALUE2);
+    assert_ne!(VALUE1, VALUE2);
+}

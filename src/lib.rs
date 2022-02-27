@@ -8,9 +8,9 @@ use proc_macro_hack::proc_macro_hack;
 /// ```
 /// use const_random::const_random  ;
 /// const MY_RANDOM_NUMBER: u32 = const_random!(u32);
+/// const MY_RANDOM_BYTES: [u8; 32] = const_random!([u8; 32]);
 /// ```
 ///
-/// The following types are supported u8, i8, u16, i16, u32, i32, u64, i64, u128, i128, usize, and isize. 
-///
+/// The following types are supported u8, i8, u16, i16, u32, i32, u64, i64, u128, i128, usize, isize and [u8; N].
 #[proc_macro_hack(fake_call_site)]
 pub use const_random_macro::const_random;
