@@ -1,20 +1,18 @@
 use proc_macro::Span;
 use std::option_env;
 
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 use tiny_keccak::{Hasher, Sha3};
 
-lazy_static! {
-    static ref SEED: Vec<u8> = {
-        if let Some(value) = option_env!("CONST_RANDOM_SEED") {
-            value.as_bytes().to_vec()
-        } else {
-            let mut value = [0u8; 32];
-            getrandom::getrandom(&mut value).unwrap();
-            value.to_vec()
-        }
-    };
-}
+static SEED: Lazy<Vec<u8>> = Lazy::new(|| {
+    if let Some(value) = option_env!("CONST_RANDOM_SEED") {
+        value.as_bytes().to_vec()
+    } else {
+        let mut value = [0u8; 32];
+        getrandom::getrandom(&mut value).unwrap();
+        value.to_vec()
+    }
+});
 
 pub(crate) fn gen_random<T: Random>() -> T {
     Random::random()
