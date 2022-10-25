@@ -3,8 +3,10 @@ extern crate proc_macro;
 
 use proc_macro::*;
 use proc_macro_hack::proc_macro_hack;
+use std::iter::once;
 mod span;
-use crate::span::gen_random;
+use crate::span::{gen_random_bytes, gen_random};
+
 
 /// Create a TokenStream of an identifier out of a string
 fn ident(ident: &str) -> TokenStream {
@@ -40,6 +42,17 @@ pub fn const_random(input: TokenStream) -> TokenStream {
                 .collect();
             TokenTree::from(Group::new(Delimiter::Parenthesis, type_cast)).into()
         }
-        _ => panic!("Invalid integer type"),
+        byte_array if byte_array.starts_with("[u8 ; ") && byte_array.ends_with(']')=> {
+            let len = byte_array[6..byte_array.len()-1].parse().unwrap();
+            let mut random_bytes = vec![0; len];
+            gen_random_bytes(&mut random_bytes);
+            let array_parts: TokenStream = random_bytes.into_iter().flat_map(|byte|  {
+                let val = TokenTree::from(Literal::u8_suffixed(byte));
+                let comma = TokenTree::from(Punct::new(',', Spacing::Alone));
+                once(val).chain(once(comma))
+            }).collect();
+            TokenTree::from(Group::new(Delimiter::Bracket, array_parts)).into()
+        }
+        _ => panic!("Invalid type"),
     }
 }

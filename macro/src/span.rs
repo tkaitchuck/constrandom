@@ -2,7 +2,7 @@ use proc_macro::Span;
 use std::option_env;
 
 use once_cell::sync::Lazy;
-use tiny_keccak::{Hasher, Sha3};
+use tiny_keccak::{Xof, Hasher, Shake};
 
 static SEED: Lazy<Vec<u8>> = Lazy::new(|| {
     if let Some(value) = option_env!("CONST_RANDOM_SEED") {
@@ -18,13 +18,17 @@ pub(crate) fn gen_random<T: Random>() -> T {
     Random::random()
 }
 
+pub(crate) fn gen_random_bytes(output: &mut [u8]) {
+    hash_stuff().squeeze(output)
+}
+
 pub(crate) trait Random {
     fn random() -> Self;
 }
 
-fn hash_stuff() -> impl Hasher {
+fn hash_stuff() -> impl Xof {
     let span = Span::call_site();
-    let mut hasher = Sha3::v256();
+    let mut hasher = Shake::v256();
     hasher.update(&*SEED);
     hasher.update(&format!("{:?}", span).as_bytes());
     hasher
@@ -33,7 +37,7 @@ fn hash_stuff() -> impl Hasher {
 impl Random for u64 {
     fn random() -> Self {
         let mut output = [0; 8];
-        hash_stuff().finalize(&mut output);
+        hash_stuff().squeeze(&mut output);
         Self::from_ne_bytes(output)
     }
 }
@@ -41,7 +45,7 @@ impl Random for u64 {
 impl Random for u128 {
     fn random() -> Self {
         let mut output = [0; 16];
-        hash_stuff().finalize(&mut output);
+        hash_stuff().squeeze(&mut output);
         Self::from_ne_bytes(output)
     }
 }
