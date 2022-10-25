@@ -1,18 +1,23 @@
 use proc_macro::Span;
 use std::option_env;
 
-use once_cell::sync::Lazy;
+use once_cell::race::OnceBox;
 use tiny_keccak::{Xof, Hasher, Shake};
 
-static SEED: Lazy<Vec<u8>> = Lazy::new(|| {
-    if let Some(value) = option_env!("CONST_RANDOM_SEED") {
-        value.as_bytes().to_vec()
-    } else {
-        let mut value = [0u8; 32];
-        getrandom::getrandom(&mut value).unwrap();
-        value.to_vec()
-    }
-});
+
+static SEED: OnceBox<Vec<u8>> = OnceBox::new();
+
+fn get_seed() -> &'static [u8] {
+    &SEED.get_or_init(|| {
+        if let Some(value) = option_env!("CONST_RANDOM_SEED") {
+ 	    Box::new(value.as_bytes().to_vec())
+    	} else {
+            let mut value = [0u8; 32];
+            getrandom::getrandom(&mut value).unwrap();
+            Box::new(value.to_vec())
+        }
+    })[..]
+}
 
 pub(crate) fn gen_random<T: Random>() -> T {
     Random::random()
@@ -29,7 +34,7 @@ pub(crate) trait Random {
 fn hash_stuff() -> impl Xof {
     let span = Span::call_site();
     let mut hasher = Shake::v256();
-    hasher.update(&*SEED);
+    hasher.update(get_seed());
     hasher.update(&format!("{:?}", span).as_bytes());
     hasher
 }

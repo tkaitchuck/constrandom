@@ -16,4 +16,4 @@ proc-macro = true
 proc-macro-hack = { version = "0.5.13" }
 getrandom = "0.2.0"
 tiny-keccak = { version = "2.0.2", features = ["shake"] }
-once_cell = { version = "1", default-features = false }
+once_cell = { version = "1.15", default-features = false, features = ["race", "alloc"] }
