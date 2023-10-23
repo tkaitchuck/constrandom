@@ -11,4 +11,4 @@ readme = "README.md"
 edition = "2018"
 
 [dependencies]
-const-random-macro = { path = "macro", version = "0.1.15"}
+const-random-macro = { path = "macro", version = "0.1.16"}
