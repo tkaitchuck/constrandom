@@ -12,4 +12,3 @@ edition = "2018"
 
 [dependencies]
 const-random-macro = { path = "macro", version = "0.1.15"}
-proc-macro-hack = { version = "0.5" }

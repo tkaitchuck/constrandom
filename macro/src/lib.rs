@@ -2,7 +2,6 @@
 extern crate proc_macro;
 
 use proc_macro::*;
-use proc_macro_hack::proc_macro_hack;
 use std::iter::once;
 mod span;
 use crate::span::{gen_random_bytes, gen_random};
@@ -13,7 +12,7 @@ fn ident(ident: &str) -> TokenStream {
     TokenTree::from(Ident::new(ident, Span::call_site())).into()
 }
 
-#[proc_macro_hack]
+#[proc_macro]
 pub fn const_random(input: TokenStream) -> TokenStream {
     match &input.to_string()[..] {
         "u8" => TokenTree::from(Literal::u8_suffixed(gen_random())).into(),
