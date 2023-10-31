@@ -1,6 +1,6 @@
 [package]
 name = "const-random"
-version = "0.1.16"
+version = "0.1.17"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
