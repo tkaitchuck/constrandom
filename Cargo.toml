@@ -1,6 +1,6 @@
 [package]
 name = "const-random"
-version = "0.1.19"
+version = "0.1.20"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tkaitchuck/constrandom"
 documentation = "https://docs.rs/const-random"
@@ -9,6 +9,7 @@ keywords = ["rust", "constants", "macro"]
 description = "Provides compile time random number generation."
 readme = "README.md"
 edition = "2018"
+rust-version = "1.85"
 
 [dependencies]
 const-random-macro = { path = "macro", version = "0.1.17"}
