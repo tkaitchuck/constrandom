@@ -12,7 +12,7 @@ fn get_seed() -> &'static [u8] {
             Box::new(value.as_bytes().to_vec())
         } else {
             let mut value = [0u8; 32];
-            getrandom::getrandom(&mut value).unwrap();
+            getrandom::fill(&mut value).unwrap();
             Box::new(value.to_vec())
         }
     })[..]
